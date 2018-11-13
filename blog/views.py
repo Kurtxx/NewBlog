@@ -118,13 +118,14 @@ def CategoryDetail(request, slug):
     template_name = 'blog/category_detail.html'  # <app>/<model>_<viewtype>.html
 
     category = get_object_or_404(Category, slug=slug)
-    post = Post.objects.filter(post_category=post_category)
+    post = Post.objects.filter(post_category=category)
 
     context = {
         'category': category,
         'post': post,
+
     }
-    return render(request, template, context)
+    return render(request, template_name, context)
 
 
 @login_required
