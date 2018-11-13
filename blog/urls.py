@@ -35,6 +35,7 @@ urlpatterns = [
     # np /blog/nowakategoria
     path('category/add/', views.KategoriaCreateView.as_view(), name='category-create'),
 
+    # path('category/<str:slug>/', views.CategoryDetail.as_view(), name='category-detail'),
     path('category/<str:slug>/', CategoryDetail, name='category-detail'),
 
     path('about/', views.about, name='blog-about'),

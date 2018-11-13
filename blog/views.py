@@ -122,11 +122,22 @@ def CategoryDetail(request, slug):
 
     context = {
         'category': category,
-        'post': post,
+        'posts': post,
 
     }
     return render(request, template_name, context)
 
+
+#class CategoryDetail(ListView):
+#    model = Post
+#    model = Category
+#    template_name = 'blog/category_detail.html'  # <app>/<model>_<viewtype>.html
+#    context_object_name = 'posts'
+#    paginate_by = 3
+
+#    def get_queryset(self):
+#        category = get_object_or_404(Category, slug=slug)
+#        return Post.objects.filter(post_category=category)
 
 @login_required
 def AddComment(request, pk):
