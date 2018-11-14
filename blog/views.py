@@ -20,14 +20,17 @@ from .forms import CommentForm
 def home(request):
 
     posts = Post.objects.all()
+    search_term=''
+
+    if 'search' in request.GET:
+        search_term = request.GET['search_term']
+        posts = posts.filter(text__icontains=search_term)
 
     context = {
         'posts': Post.objects.all(),
+        'search_term': search_term
     }
-    if 'search' in request.GET:
-        search_term = request.GET['search']
-        posts = Post.filter(text__icontains=search_term)
-        
+
     return render(request, 'blog/home.html', context)
 
 
