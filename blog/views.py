@@ -39,17 +39,19 @@ def home(request):
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html' # <app>/model>_<viewtype>.html
-    context_object_name = {'posts', 'search_term'}
+    context_object_name = {'posts'}
     ordering = ['-date_posted']
     paginate_by = 3
 
 
     def get(self, request, *args, **kwargs):
+        search_term = ''
         posts = self.get_queryset()
         if 'search_term' in request.GET:
-            search_term = request.GET['search']
-            posts = posts.filter(text__icontains=search_term)
-        return render(self.template_name, request, {'posts': posts, 'search_term': search_term })
+            search_term = request.GET['search_term']
+            posts = Post.filter(text__icontains=search_term)
+
+        return render(request, self.template_name, {'posts': posts , 'search_term': search_term })
 
 
 

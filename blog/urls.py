@@ -15,6 +15,8 @@ from . import views
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
 
+    #path('search_term/', PostListView.as_view(), name='search_term'),
+
     path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
 
     # np /blog/<post_id>/ (ID = PK)

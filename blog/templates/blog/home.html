@@ -3,7 +3,7 @@
 {% block content %}
 
   <form class="form-inline my-2 my-lg-2" action="" method="GET">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ search_term }}">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ request.GET.search_term }}">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Szukaj!</button>
   </form>
 
@@ -18,13 +18,10 @@
             </div>
             <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
-
             <a class="article-title" href="{% url 'post-detail' post.id %}">Komentarze: {{ post.comments.count }}</a>
-
           </div>
         </article>
     {% endfor %}
-
 
     {% if is_paginated %}
       {% if page_obj.has_previous %}
