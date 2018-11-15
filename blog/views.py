@@ -19,16 +19,16 @@ from .forms import CommentForm
 
 def home(request):
 
-    posts = Post.objects.all()
-    search_term=''
+#    posts = Post.objects.all()
+#    search_term=''
 
-    if 'search' in request.GET:
-        search_term = request.GET['search_term']
-        posts = posts.filter(text__icontains=search_term)
+#    if 'search' in request.GET:
+#        search_term = request.GET['search_term']
+#        posts = posts.filter(text__icontains=search_term)
 
     context = {
         'posts': Post.objects.all(),
-        'search_term': search_term
+#        'search_term': search_term
     }
 
     return render(request, 'blog/home.html', context)
@@ -39,9 +39,18 @@ def home(request):
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html' # <app>/model>_<viewtype>.html
-    context_object_name = 'posts'
+    context_object_name = {'posts', 'search_term'}
     ordering = ['-date_posted']
     paginate_by = 3
+
+
+    def get(self, request, *args, **kwargs):
+        posts = self.get_queryset()
+        if 'search_term' in request.GET:
+            search_term = request.GET['search']
+            posts = posts.filter(text__icontains=search_term)
+        return render(self.template_name, request, {'posts': posts, 'search_term': search_term })
+
 
 
 
