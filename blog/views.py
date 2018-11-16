@@ -36,7 +36,7 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 3
 
-# <!-- Początek Wyszukiwarki Postów Szuka poprzez Tytuł i opis (Brak przez kategorie i nick (spr) )! --!>
+# <!-- Początek Wyszukiwarki Postów Szuka poprzez Tytuł, opis, Nick i Kategorie! --!>
 
     def get(self, request, *args, **kwargs):
         search = ''
@@ -45,7 +45,9 @@ class PostListView(ListView):
         if query:
             posts = posts.filter(
                 Q(title__icontains=query) |
-                Q(content__icontains=query)
+                Q(content__icontains=query) |
+                Q(author__username__icontains=query) |
+                Q(post_category__name__icontains=query)
                 ).distinct()
 
         return render(request, self.template_name, {'posts': posts , 'search': search })
