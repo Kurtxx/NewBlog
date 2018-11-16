@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -19,16 +20,8 @@ from .forms import CommentForm
 
 def home(request):
 
-#    posts = Post.objects.all()
-#    search_term=''
-
-#    if 'search' in request.GET:
-#        search_term = request.GET['search_term']
-#        posts = posts.filter(text__icontains=search_term)
-
     context = {
         'posts': Post.objects.all(),
-#        'search_term': search_term
     }
 
     return render(request, 'blog/home.html', context)
@@ -43,16 +36,21 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 3
 
+# <!-- Początek Wyszukiwarki Postów Szuka poprzez Tytuł i opis (Brak przez kategorie i nick (spr) )! --!>
 
     def get(self, request, *args, **kwargs):
-        search_term = ''
+        search = ''
+        query = request.GET.get('search')
         posts = self.get_queryset()
-        if 'search_term' in request.GET:
-            search_term = request.GET['search_term']
-            posts = Post.filter(text__icontains=search_term)
+        if query:
+            posts = posts.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query)
+                ).distinct()
 
-        return render(request, self.template_name, {'posts': posts , 'search_term': search_term })
+        return render(request, self.template_name, {'posts': posts , 'search': search })
 
+# <!-- Koniec Wyszukiwarki Postów! --!>
 
 
 
