@@ -41,18 +41,28 @@ class PostListView(ListView):
     def get(self, request, *args, **kwargs):
         search = ''
         query = request.GET.get('search')
+        select = request.GET.get('select')
         posts = self.get_queryset()
         if query:
-            posts = posts.filter(
-                Q(title__icontains=query) |
-                Q(content__icontains=query) |
-                Q(author__username__icontains=query) |
-                Q(post_category__name__icontains=query)
-                ).distinct()
-
-        return render(request, self.template_name, {'posts': posts , 'search': search })
+            if select == 'PiC':
+                posts = posts.filter(
+                    Q(title__icontains=query) |
+                    Q(content__icontains=query)
+                    ).distinct()
+            elif select == 'Username':
+                posts = posts.filter(
+                    Q(author__username__icontains=query)
+                    ).distinct()
+            elif select == 'Kategoria':
+                posts = posts.filter(
+                    Q(post_category__name__icontains=query)
+                    ).distinct()
+        return render(request, self.template_name, {'posts': posts ,
+                                                    'search': search, })
 
 # <!-- Koniec Wyszukiwarki Postów! --!>
+
+
 
 
 
