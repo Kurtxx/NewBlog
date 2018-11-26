@@ -74,6 +74,11 @@
                 <li class="list-group-item list-group-item-light">
                 <form class="form-inline my-2 my-lg-2" action="" method="GET">
                   <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ request.GET.search }}">
+                  <select class="form-control mr-sm-2" name = 'select'>
+                    <option value="PiC" name="PiC" >Post i content</option>
+                    <option value="Username" name="Username" >Username</option>
+                    <option value="Kategoria" name="Kategoria" >Kategoria</option>
+                  </select>
                   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Szukaj!</button>
                 </form>
                 </li>
